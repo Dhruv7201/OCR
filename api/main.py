@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, BackgroundTasks
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from PIL import Image
@@ -7,6 +7,10 @@ import io
 import base64
 import re
 import easyocr
+from fuzzywuzzy import process
+import cv2
+import numpy as np
+import time
 
 app = FastAPI()
 
@@ -39,17 +43,21 @@ def filter_text(results, min_text_length=5, confidence_threshold=0.75):
     return filtered_results
 
 
-
-
 @app.post("/api/send-frame", response_model=dict)
-async def send_frame(frame: VideoFrame, background_tasks: BackgroundTasks):
+async def send_frame(frame: VideoFrame):
+    start_time = time.time()
     # Decode the base64 image data to bytes
     image_data = frame.frame.split(',')[1].encode('utf-8')
-    image = Image.open(io.BytesIO(base64.b64decode(image_data)))
 
-        # Perform OCR on the image
-    reader = easyocr.Reader(['en'], gpu=True, model_storage_directory='./models', user_network_directory='./user_network', recognizer='lite')
-    recognition_results = reader.readtext(image)
+    # Convert the bytes to an image
+    image = Image.open(io.BytesIO(base64.b64decode(image_data)))
+    image_np = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2GRAY)
+
+    # save the image to disk
+    cv2.imwrite('image.jpg', image_np)
+    # Perform OCR on the image
+    reader = easyocr.Reader(['en'], gpu=True, model_storage_directory='./models', user_network_directory='./user_network', recognizer='Transformer', verbose=False, download_enabled=False, detector='TextDetection')
+    recognition_results = reader.readtext(image_np)
 
     # logic to find batch number from list of text
     batch_text = ''
@@ -70,7 +78,7 @@ async def send_frame(frame: VideoFrame, background_tasks: BackgroundTasks):
     text1 = ''
     if filtered_results:
         for result in filtered_results:
-            text1 = text1 + result[1]
+            text1 = text1 + ' ' + result[1]
     try:
         filtered_text1 = re.search(r'\b[A-Za-z]+\s*[A-Za-z0-9&\s,()]+\s[A-Za-z]+\b', text1).group()
         filtered_text1 = re.sub(r'\n', '', filtered_text1)
@@ -86,14 +94,13 @@ async def send_frame(frame: VideoFrame, background_tasks: BackgroundTasks):
                 if BatchNumber == '':
                     result = text1
                     result = result.split()
-                    batch_no_index = result.index('B.No.' or 'B.No' or 'B.No.:' or 'B.No:' or 'B.No')
-                    # Print the next four-list members
-                    next_four_members = result[batch_no_index + 1:batch_no_index + 5]
+                    batch_no_index = process.extractOne('Batch', result)
+                    batch_no_index = result.index(batch_no_index[0])
+                    next_four_members = result[batch_no_index + 1:batch_no_index + 2]
                     next_four_members = ' '.join(next_four_members)
                     for i in next_four_members:
                         next_four_members = next_four_members.replace(',', '')
                         next_four_members = re.sub(r'[\u0900-\u097F]+', '', next_four_members)
-                        next_four_members = re.search(r'\b([A-Za-z]+\d+)\b', next_four_members).group()
                     return {'productName': '', 'batchNumber': next_four_members}
                 return {'productName': '', 'batchNumber': BatchNumber}
             elif match1:
@@ -101,17 +108,13 @@ async def send_frame(frame: VideoFrame, background_tasks: BackgroundTasks):
                 if BatchNumber == '':
                     result = text1
                     result = result.split()
-                    batch_no_index = result.index('Batch' or 'BatchNo' or 'BatchNo.' or 'BatchNo:' or 'BatchNo,' or
-                                                'BatchNo: ' or 'BatchNo;')
-                    next_four_members = result[batch_no_index + 1:batch_no_index + 5]
+                    batch_no_index = process.extractOne('Batch', result)
+                    batch_no_index = result.index(batch_no_index[0])
+                    next_four_members = result[batch_no_index + 1:batch_no_index + 2]
                     next_four_members = ' '.join(next_four_members)
-                    print('0000000000000000000000000000',next_four_members)
                     for i in next_four_members:
                         next_four_members = next_four_members.replace(',', '')
                         next_four_members = re.sub(r'[\u0900-\u097F]+', '', next_four_members)
-                        print(next_four_members)
-                        next_four_members = re.search(r'\b([A-Za-z]+-\d+)\b', next_four_members).group()
-                    print('111111111111111111',next_four_members)
                     return {'productName': '', 'batchNumber': next_four_members}
                 return {'productName': '', 'batchNumber': BatchNumber}
         else:

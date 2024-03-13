@@ -1,29 +1,31 @@
-import easyocr
+import io
+import base64
+from PIL import Image
 import cv2
-import time
+import numpy as np
+import easyocr
 
-def filter_text(results, min_text_length=5, confidence_threshold=0.75):
-    filtered_results = []
-    for result in results:
-        print(result)
-        text = result[1]
-        confidence = result[2]
-        # Adjust the criteria as needed
-        if len(text) >= min_text_length and confidence > confidence_threshold:
-            filtered_results.append(result)
-    return filtered_results
+# get the image from the file
+image = Image.open('image.jpg')
+image_np = np.array(image)
 
-reader = easyocr.Reader(['en'], gpu=False, download_enabled=True, model_storage_directory='./models', user_network_directory='./user_network', recognizer='lite')
+# Perform OCR on the image
+reader = easyocr.Reader(['en'], gpu=True, model_storage_directory='./models', user_network_directory='./user_network', recognizer='Transformer', verbose=False, download_enabled=False, detector='TextDetection')
+recognition_results = reader.readtext(image_np)
 
-image = './Screenshot from 2024-02-05 17-46-26.png'
+# Print OCR results
+for result in recognition_results:
+    print(result)
 
-recognition_results = reader.readtext(image)
+# show image with bounding boxes
+for result in recognition_results:
+    # Extract coordinates
+    box_coordinates = result[0]
+    top_left = tuple(box_coordinates[0])
+    bottom_right = tuple(box_coordinates[2])
+    text = result[1]
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    image_np = cv2.rectangle(image_np, top_left, bottom_right, (0, 255, 0), 5)
 
-# Filter and print the desired results
-filtered_results = filter_text(recognition_results)
-
-if filtered_results:
-    print("Filtered Text:")
-    for result in filtered_results:
-        print('111111111111111111111111111111', result[1])
-
+# save the image to disk
+cv2.imwrite('image_with_bounding_boxes.jpg', image_np)
