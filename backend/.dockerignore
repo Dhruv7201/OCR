@@ -1,0 +1,23 @@
+# Ignore common Python files and directories
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Ignore development and build files
+venv/
+.env
+build/
+dist/
+
+# Ignore version control files
+.git/
+.gitignore
+
+# Ignore editor and IDE files
+.vscode/
+.idea/
+
+# Ignore miscellaneous files
+*.log
+.DS_Store

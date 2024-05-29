@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  python-app:
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  react-app:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - python-app
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb:
