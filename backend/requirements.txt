@@ -130,7 +130,7 @@ pytorch-triton-rocm==2.3.0
 pytz==2022.1
 pyxdg==0.27
 PyYAML==5.4.1
-reportlab==3.6.8
+reportlab==3.6.13
 requests==2.25.1
 rich==13.7.1
 scikit-image==0.23.2
