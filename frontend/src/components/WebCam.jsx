@@ -211,7 +211,7 @@ const WebCam = () => {
 
       try {
         const response = await fetch(
-          "http://192.168.0.194:3001/api/send-frame",
+          "http://192.168.0.156:3001/api/send-frame",
           {
             method: "POST",
             headers: {
