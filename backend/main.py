@@ -50,6 +50,7 @@ async def send_frame(data: VideoFrame):
     image_data = data.frame.split(",")[1] if data.frame.startswith('data:image') else data.frame
     img = Image.open(io.BytesIO(base64.b64decode(image_data)))
 
+
     picknote = data.picknote
     token = data.token
 
@@ -58,7 +59,7 @@ async def send_frame(data: VideoFrame):
     if not picknote_flag:
         print("Picknote not found")
         return {
-            'batchNumber': "faf",
+            'batchNumber': None,
             'mfgDate': None,
             'expDate': None,
             'image': None,
