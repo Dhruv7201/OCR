@@ -1,12 +1,13 @@
 import psycopg2
 
 
-
-conn = psycopg2.connect(database = "zota",
-                        user = "tableau",
-                        host= '27.109.26.202',
-                        password = "ta372mogt9",
-                        port = 5432)
+conn = psycopg2.connect(
+    database="zota",
+    user="tableau",
+    host="27.109.26.202",
+    password="ta372mogt9",
+    port=5432,
+)
 
 
 if conn:

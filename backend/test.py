@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import torch
 
 # Assuming YOLOv8 class loads weights from 'BNo.pt'
-model = YOLO('model/BNo.pt')
+model = YOLO("model/BNo.pt")
 model.eval()
 
 # Example inference
