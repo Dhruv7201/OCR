@@ -172,7 +172,7 @@ ufw==0.36.1
 ujson==5.10.0
 ultralytics==8.2.26
 unattended-upgrades==0.1
-urllib3==1.26.5
+urllib3==1.26.19
 usb-creator==0.3.7
 uvicorn==0.29.0
 uvloop==0.19.0
