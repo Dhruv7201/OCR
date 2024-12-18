@@ -153,7 +153,7 @@ spacy-legacy==3.0.12
 spacy-loggers==1.0.5
 srsly==2.4.8
 ssh-import-id==5.11
-starlette==0.37.2
+starlette==0.40.0
 sympy==1.12
 systemd-python==234
 thinc==8.2.3
