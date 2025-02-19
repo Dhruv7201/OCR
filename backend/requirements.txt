@@ -103,7 +103,7 @@ opencv-python-headless==4.9.0.80
 orjson==3.10.3
 packaging==24.0
 pandas==2.2.2
-paramiko==2.9.3
+paramiko==3.4.0
 pexpect==4.8.0
 pillow==10.3.0
 preshed==3.0.9
