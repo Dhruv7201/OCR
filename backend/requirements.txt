@@ -15,7 +15,7 @@ colorama==0.4.4
 command-not-found==0.3
 confection==0.1.4
 contourpy==1.2.1
-cryptography==44.0.0
+cryptography==44.0.1
 cupshelpers==1.0
 cycler==0.12.1
 cymem==2.0.8
