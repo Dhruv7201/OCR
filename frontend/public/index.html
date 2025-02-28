@@ -4,12 +4,37 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#4285F4" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Extract text from images and documents with our OCR application"
     />
+    <meta name="keywords" content="OCR, optical character recognition, text extraction, document scanning, image to text" />
+    <meta name="author" content="Your Name or Company" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://portfolio-6f57d.web.app/" />
+    <meta property="og:title" content="OCR Text Extractor" />
+    <meta property="og:description" content="Extract text from images and documents with our OCR application" />
+    <meta property="og:image" content="%PUBLIC_URL%/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://portfolio-6f57d.web.app/" />
+    <meta property="twitter:title" content="OCR Text Extractor" />
+    <meta property="twitter:description" content="Extract text from images and documents with our OCR application" />
+    <meta property="twitter:image" content="%PUBLIC_URL%/og-image.png" />
+    
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    
+    <!-- Preconnect to domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Optional: Add a Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -24,11 +49,40 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>OCR Text Extractor</title>
+
+    <!-- Optional: Add basic styles -->
+    <style>
+      body {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      .loading-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #f7f9fc;
+      }
+    </style>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: sans-serif;">
+        <h2>JavaScript Required</h2>
+        <p>This OCR application requires JavaScript to process images and extract text. Please enable JavaScript in your browser settings to continue.</p>
+      </div>
+    </noscript>
+    <div id="root">
+      <!-- Optional: Add a loading indicator that shows until React loads -->
+      <div class="loading-screen">
+        <div>Loading OCR application...</div>
+      </div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
