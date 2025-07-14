@@ -107,7 +107,7 @@ paramiko==3.4.0
 pexpect==4.8.0
 pillow==10.3.0
 preshed==3.0.9
-protobuf==3.18.3
+protobuf==4.25.8
 psutil==5.9.8
 ptyprocess==0.7.0
 py-cpuinfo==9.0.0
